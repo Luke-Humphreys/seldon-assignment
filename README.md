@@ -7,6 +7,7 @@
 ## Build
 
 - standard golang build, ensure it is on your gopath and run `go build`
+- I checked in a precompiled binary just incase
 
 ## Running
 
