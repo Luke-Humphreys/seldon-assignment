@@ -25,6 +25,7 @@ type GetAvailabilityResponse struct {
 
 // creates resource by curling apiserver, returns the name of created resource
 func createResource(filepath, namespace string) (string, error) {
+	// open file
 	f, err := os.Open(filepath)
 	if err != nil {
 		return "", fmt.Errorf("failed to open manifest file: %s", err.Error())
@@ -32,6 +33,7 @@ func createResource(filepath, namespace string) (string, error) {
 	defer f.Close()
 
 	log.Println("Creating resource")
+	// construct api call
 	url := fmt.Sprintf("http://127.0.0.1:8080/apis/machinelearning.seldon.io/v1alpha2/namespaces/%s/seldondeployments", namespace)
 	req, err := http.NewRequest("POST", url, f)
 	if err != nil {
@@ -42,6 +44,7 @@ func createResource(filepath, namespace string) (string, error) {
 	contentType := fmt.Sprintf("application/%s", getFiletype(filepath))
 	req.Header.Set("Content-Type", contentType)
 
+	// do request
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
 		return "", fmt.Errorf("failed to curl mainifest to api: %s", err.Error())
